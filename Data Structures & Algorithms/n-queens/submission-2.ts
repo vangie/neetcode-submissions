@@ -1,0 +1,37 @@
+class Solution {
+
+    solveNQueens(n: number): string[][] {
+        let res = [];
+        let board = Array.from({ length: n }, () => Array(n).fill("."));
+
+        const backtrack = (r: number) => {
+            if (r === n) {
+                res.push(board.map((row) => row.join("")));
+                return;
+            }
+            for (let c = 0; c < n; c++) {
+                if (this.isSafe(r, c, board)) {
+                    board[r][c] = "Q";
+                    backtrack(r + 1);
+                    board[r][c] = ".";
+                }
+            }
+        };
+
+        backtrack(0);
+        return res;
+    }
+
+    isSafe(r: number, c: number, board: string[][]): boolean {
+        for (let i = r - 1; i >= 0; i--) {
+            if (board[i][c] === "Q") return false;
+        }
+        for (let i = r - 1, j = c - 1; i >= 0 && j >= 0; i--, j--) {
+            if (board[i][j] === "Q") return false;
+        }
+        for (let i = r - 1, j = c + 1; i >= 0 && j < board.length; i--, j++) {
+            if (board[i][j] === "Q") return false;
+        }
+        return true;
+    }
+}
